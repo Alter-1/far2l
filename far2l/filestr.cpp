@@ -925,7 +925,10 @@ bool GetFileFormat(File& file, UINT& nCodePage, bool* pSignatureFound, bool bUse
 					}
 				}
 			}
-			else if (IsTextUTF8(reinterpret_cast<LPBYTE>(Buffer), ReadSize))
+			if(bDetect) {
+				// do nothing
+			} else
+			if (IsTextUTF8(reinterpret_cast<LPBYTE>(Buffer), ReadSize))
 			{
 				nCodePage=CP_UTF8;
 				bDetect=true;
@@ -936,6 +939,7 @@ bool GetFileFormat(File& file, UINT& nCodePage, bool* pSignatureFound, bool bUse
 				ns->HandleData(reinterpret_cast<LPCSTR>(Buffer), ReadSize);
 				ns->DataEnd();
 				int cp = ns->getCodePage();
+				float r = ns->GetConfidence();
 
 				if (cp != -1)
 				{
